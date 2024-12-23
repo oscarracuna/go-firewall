@@ -28,7 +28,7 @@ func main() {
 }
 
 func capturePackets() {
-	device := "enp8s0" 
+	device := "enp8s0" //Change this with the name of your device 
 	snapLen := int32(65535) 
 	promiscuous := false    
 	timeout := pcap.BlockForever
