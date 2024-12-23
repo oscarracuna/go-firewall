@@ -17,8 +17,8 @@ var scanTracker = make(map[string]struct {
 })
 
 const (
-	blockThreshold = 5               // Number of SYN packets to trigger a block
-	blockDuration  = 10 * time.Minute // Duration to block an IP
+	blockThreshold = 5               
+	blockDuration  = 10 * time.Minute
 )
 
 func main() {
@@ -28,9 +28,9 @@ func main() {
 }
 
 func capturePackets() {
-	device := "eth0" // Replace with your actual network interface
-	snapLen := int32(65535) // Maximum bytes to capture per packet
-	promiscuous := false    // Don't capture packets not meant for the interface
+	device := "enp8s0" 
+	snapLen := int32(65535) 
+	promiscuous := false    
 	timeout := pcap.BlockForever
 
 	handle, err := pcap.OpenLive(device, snapLen, promiscuous, timeout)
@@ -47,7 +47,7 @@ func capturePackets() {
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	for packet := range packetSource.Packets() {
-		processPacket(packet) // Process each captured packet
+		processPacket(packet)
 	}
 }
 
@@ -91,7 +91,12 @@ func handleScan(ip string) {
 }
 
 func blockIP(ip string) {
-	cmd := exec.Command("sudo", "iptables", "-A", "INPUT", "-s", ip, "-j", "DROP")
+	if ip == "127.0.0.1" {
+    fmt.Println("Skipping block for localhost.")
+    return
+  }
+
+  cmd := exec.Command("sudo", "iptables", "-A", "INPUT", "-s", ip, "-j", "DROP")
 	err := cmd.Run()
 	if err != nil {
 		log.Printf("Error blocking IP %s: %v", ip, err)
