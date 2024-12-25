@@ -65,22 +65,6 @@ func processPacket(packet gopacket.Packet) {
 
 		handleScan(ip.SrcIP.String())
 	}
-  /*if ipLayer != nil && tcpLayer != nil {
-		ip, _ := ipLayer.(*layers.IPv4)
-		tcp, _ := tcpLayer.(*layers.TCP)
-
-    if tcp.SYN && !tcp.ACK {
-			SrcIP := ip.SrcIP.String()
-			DstIP := ip.DstIP.String()
-
-				if !strings.HasPrefix(SrcIP, "192.168.") && !strings.HasPrefix(SrcIP, "10.") && !strings.HasPrefix(SrcIP, "127.0.0.1") {
-		    fmt.Printf("SYN Packet: SrcIP: %s, DstIP: %s, SrcPort: %d, DstPort: %d\n", ip.SrcIP, ip.DstIP, tcp.SrcPort, tcp.DstPort)
-        fmt.Println(DstIP)
-		    
-      handleScan(ip.SrcIP.String())
-      }
-		}
-	}*/
 }
 
 func handleScan(ip string) {
