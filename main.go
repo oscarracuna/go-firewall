@@ -44,7 +44,7 @@ func capturePackets() {
 	if err := handle.SetBPFFilter(filter); err != nil {
 		log.Fatalf("Error setting BPF filter: %v", err)
 	}
-	fmt.Println("Capturing TCP SYN packets...")
+	fmt.Println("Capturing packets...")
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	for packet := range packetSource.Packets() {
@@ -60,7 +60,7 @@ func processPacket(packet gopacket.Packet) {
 		ip, _ := ipLayer.(*layers.IPv4)
 		tcp, _ := tcpLayer.(*layers.TCP)
 
-		fmt.Printf("SYN Packet: SrcIP: %s, DstIP: %s, SrcPort: %d, DstPort: %d\n",
+		fmt.Printf("Source IP: %s, Destination IP: %s, Source Port: %d, Destination Port: %d\n",
 			ip.SrcIP, ip.DstIP, tcp.SrcPort, tcp.DstPort)
 
 		handleScan(ip.SrcIP.String())
